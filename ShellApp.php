@@ -1,6 +1,19 @@
 <?php
 namespace CodingLiki\ShellApp;
 
+/**
+ * Класс разбирает параметры командной строки как консольное приложение
+ * В конструктор можно передать массив вида
+ * [
+ *      "f" => [
+ *         "first" 
+ *      ],
+ *      "s" => [
+ *          "second",
+ *          "required" => true
+ *      ]
+ * ]
+ */
 class ShellApp{
     public $params_short = [];
     public $params_long = [];
@@ -10,19 +23,36 @@ class ShellApp{
     public $params_values = [];
     public $params_array = [];
 
-    public function __construct($params_array){
+    /**
+     * Конструктор
+     *
+     * @param array $params_array массив названий параметров
+     */
+    public function __construct(array $params_array){
         $this->params_array = $params_array;
         $this->normalizeParams($params_array);
         $this->getInputParamsValues();
     }
 
-    public function getParam($param_name, $default = null){
+    /**
+     * Возвращает значение параметра по имени 
+     *
+     * @param string $param_name имя параметра короткое либо длинное
+     * @param mixed $default значение возвращается, если не найдено ни для короткое ни для длинного параметра
+     * @return mixed
+     */
+    public function getParam(string $param_name, $default = null){
         $long_name  = $this->params_long[$param_name]  ?? null;
         $short_name = $this->params_short[$param_name] ?? null;
 
         return $this->params_values[$param_name] ?? $this->params_values[$long_name ?? $short_name] ?? $default;
     }
 
+    /**
+     * Проверяет наличие значений для обязательных параметров
+     *
+     * @return bool
+     */
     public function checkRequiredParams(){
         foreach($this->required_long_params as $long_param){
             $short_param = $this->params_short[$long_param];
@@ -36,6 +66,13 @@ class ShellApp{
         return true;
     }
 
+    /**
+     * Нормализует массив названий параметров в строку коротких и массив длиннных
+     * для использования с getopt()
+     *
+     * @param array $params массив названий параметров
+     * @return void
+     */
     public function normalizeParams(array $params){
         foreach($params as $param_short => $param){
             $short_version = $param_short.":";
@@ -59,6 +96,11 @@ class ShellApp{
         }
     }
 
+    /**
+     * Парсит значения параметров с помощью getopt
+     *
+     * @return void
+     */
     public function getInputParamsValues(){
         $this->params_values = getopt($this->short_params_string, $this->long_params_array);
     }
