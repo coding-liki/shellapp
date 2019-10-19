@@ -1,0 +1,11 @@
+{
+    "name":"ShellApp",
+    "vendor":"CodingLiki",
+    "description":"Основа для консольного приложения с удобной работой с параметрами командной строки",
+    "version":"0.1",
+    "repo_url":"https://github.com/coding-liki/shellapp.git",
+    "depends_on": [
+        "CodingLiki/Autoloader",
+        "CodingLiki/Configs"
+    ]
+}
