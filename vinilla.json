@@ -5,7 +5,7 @@
     "version":"0.1",
     "repo_url":"https://github.com/coding-liki/shellapp.git",
     "depends_on": [
-        "CodingLiki/Autoloader",
+        "CodingLiki/OoAutoloader",
         "CodingLiki/Configs"
     ]
 }
